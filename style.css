@@ -39,15 +39,6 @@ dialog { border: 0; border-radius: 6px; max-width: 470px; padding: 34px; color: 
 @keyframes card-to-discard { to { opacity: 0; transform: translate(var(--card-x), var(--card-y)) scale(.72) rotate(5deg); } }
 @media (prefers-reduced-motion: reduce) { .hand .card-button.playing { animation-duration: .01ms; } }
 
-/* Classic red-and-cream ornamental backs for every face-down card. */
-.card-back { background: #b52d3b; color: #ffe9dc; border-color: #f5dfc8; outline: 2px solid #7f1e32; overflow: hidden; isolation: isolate; }
-.card-back::before, .card-back::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,233,220,.82); z-index: 0; }
-.card-back::after { inset: 15px 10px; border: 0; background: repeating-linear-gradient(45deg, rgba(255,233,220,.32) 0 1px, transparent 1px 6px), repeating-linear-gradient(-45deg, rgba(255,233,220,.24) 0 1px, transparent 1px 6px); clip-path: polygon(50% 0, 65% 31%, 100% 50%, 65% 69%, 50% 100%, 35% 69%, 0 50%, 35% 31%); }
-.back-medallion { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 42px; height: 42px; transform: translate(-50%, -50%); border: 2px solid #f5dfc8; border-radius: 50%; background: #b52d3b; color: #ffe9dc; font-size: 24px; line-height: 1; z-index: 1; }
-.shuffle-packet, .shuffle-riffle span, .shuffle-square, .shuffle-bridge { background: #b52d3b; border-color: #f5dfc8; outline-color: #7f1e32; }
-.shuffle-packet::before, .shuffle-riffle span::before, .shuffle-square::before, .shuffle-bridge::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,233,220,.82); }
-.shuffle-packet::after, .shuffle-riffle span::after, .shuffle-square::after, .shuffle-bridge::after { content: "Y"; position: absolute; inset: 0; display: grid; place-items: center; color: #ffe9dc; font-size: 28px; font-weight: 700; }
-
 .card-back, .card-face { box-sizing: border-box; flex: 0 0 91px; width: 91px; height: 126px; aspect-ratio: 91 / 126; }
 .card-back { display: grid; place-items: center; }
 .revealed-player-hand { width: 100%; }

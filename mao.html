@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mao | Secret table</title>
+<style>
+:root { --ink: #182824; --muted: #7b8d86; --paper: #f4f6f1; --felt: #dceee4; --green: #1e6756; --red: #bd4853; --cream: #fffef9; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(circle at top, #fffef9, var(--paper) 55%); font-family: Georgia, serif; }
+main { width: min(980px, 100%); margin: 0 auto; padding: 28px 24px 48px; }
+header { display: flex; align-items: end; justify-content: space-between; gap: 20px; border-bottom: 1px solid #d8e2dc; padding-bottom: 18px; }
+.eyebrow { color: var(--muted); font: 11px ui-monospace, SFMono-Regular, monospace; letter-spacing: .14em; text-transform: uppercase; }
+h1 { margin: 5px 0 0; font-size: clamp(38px, 8vw, 72px); line-height: .9; font-weight: 400; }
+.score { text-align: right; color: var(--green); font-size: 16px; }
+.table { margin-top: 30px; padding: 28px 22px 24px; border: 1px solid #c9ded2; border-radius: 10px; background: var(--felt); box-shadow: inset 0 0 70px rgba(78, 137, 104, .1); }
+.opponent { display: flex; justify-content: center; gap: 7px; min-height: 76px; }
+.card { width: 68px; height: 96px; border: 1px solid #d4ddd5; border-radius: 5px; background: var(--cream); box-shadow: 3px 4px 0 rgba(45,86,68,.13); display: grid; place-items: center; position: relative; color: var(--ink); font-size: 29px; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+.card:hover { transform: translateY(-7px); box-shadow: 3px 10px 0 rgba(45,86,68,.16); }
+.card.red { color: var(--red); }
+.card-back { background: var(--green); border: 6px solid #32806d; outline: 1px solid #8dbbad; outline-offset: -11px; color: #e4f0e8; font-size: 25px; cursor: default; }
+.card-back:hover { transform: none; box-shadow: 3px 4px 0 rgba(45,86,68,.13); }
+.center { display: flex; align-items: center; justify-content: center; gap: 25px; min-height: 180px; }
+.pile-label { color: var(--muted); font: 10px ui-monospace, SFMono-Regular, monospace; letter-spacing: .1em; text-align: center; margin-top: 8px; }
+.last-play { text-align: center; color: var(--muted); font-size: 15px; }
+.hand-area { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(113, 145, 129, .35); }
+.hand { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.controls { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+button.action { border: 0; border-radius: 4px; padding: 11px 18px; color: white; background: var(--green); font: 600 14px ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
+button.action:disabled { background: #aebdb5; cursor: not-allowed; }
+.message { min-height: 24px; text-align: center; color: var(--muted); font-size: 15px; }
+.rules { max-width: 560px; margin: 22px auto 0; color: var(--muted); text-align: center; line-height: 1.5; font-size: 14px; }
+@media (max-width: 600px) { main { padding: 20px 13px 32px; } header { align-items: start; } .table { padding: 20px 10px; } .card { width: 57px; height: 82px; } .hand { gap: 5px; } }
+</style>
+</head>
+<body>
+<main>
+<header><div><span class="eyebrow">A secret table has opened</span><h1>Mao</h1></div><div class="score"><span class="eyebrow">Rounds won</span><br><strong id="score">0 - 0</strong></div></header>
+<section class="table">
+<div class="opponent" id="opponent"></div>
+<div class="center"><div><div class="card card-back">Y</div><div class="pile-label" id="draw-count">DRAW</div></div><div><div id="discard"></div><div class="pile-label">TABLE</div></div></div>
+<p class="last-play" id="last-play">The table is quiet.</p>
+<div class="hand-area"><div class="eyebrow" style="text-align:center">Your cards</div><div class="hand" id="hand"></div><div class="controls"><button class="action" id="draw">Draw card</button></div></div>
+</section>
+<p class="message" id="message">Play a card matching the top card's suit or rank.</p>
+<p class="rules">Mao keeps some rules secret. Here, sevens require a warning, aces reverse the turn, and forgetting to say “Mao” when you have one card costs two cards.</p>
+</main>
+<script>
+const suits = [{ name: "hearts", symbol: "♥", red: true }, { name: "diamonds", symbol: "♦", red: true }, { name: "clubs", symbol: "♣" }, { name: "spades", symbol: "♠" }];
+const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+let deck = [], hand = [], cpuHand = [], discard = [], cpuTurn = false, wins = [0, 0];
+const $ = (id) => document.getElementById(id);
+function makeDeck() { return suits.flatMap((suit) => ranks.map((rank) => ({ rank, suit: suit.name, symbol: suit.symbol, red: suit.red }))); }
+function shuffle(cards) { return cards.sort(() => Math.random() - .5); }
+function html(card) { return `<button class="card ${card.red ? "red" : ""}" data-card="${card.rank}-${card.suit}" aria-label="${card.rank} of ${card.suit}">${card.rank}<span>${card.symbol}</span></button>`; }
+function back() { return '<div class="card card-back">Y</div>'; }
+function render() { $("hand").innerHTML = hand.map(html).join(""); $("opponent").innerHTML = cpuHand.map(() => back()).join(""); $("discard").innerHTML = discard.length ? html(discard[discard.length - 1]).replace("<button", "<div").replace("</button>", "</div>") : ""; $("score").textContent = `${wins[0]} - ${wins[1]}`; $("draw-count").textContent = `${deck.length} LEFT`; document.querySelectorAll("#hand .card").forEach((button) => button.addEventListener("click", () => playCard(button.dataset.card))); }
+function deal() { deck = shuffle(makeDeck()); hand = deck.splice(0, 5); cpuHand = deck.splice(0, 5); discard = [deck.pop()]; cpuTurn = false; $("message").textContent = "Play a card matching the top card's suit or rank."; render(); }
+function canPlay(card) { const top = discard[discard.length - 1]; return card.rank === top.rank || card.suit === top.suit; }
+function playCard(key) { if (cpuTurn) return; const index = hand.findIndex((card) => `${card.rank}-${card.suit}` === key); if (index < 0) return; const card = hand[index]; if (!canPlay(card)) { $("message").textContent = "Mao says no. Match the suit or rank."; return; } hand.splice(index, 1); discard.push(card); $("last-play").textContent = `You played the ${card.rank} of ${card.suit}.`; render(); if (!hand.length) return endRound(0); if (card.rank === "7") $("message").textContent = "Seven. Say a warning."; if (card.rank === "A") { $("message").textContent = "Ace reverses the turn."; return; } cpuTurn = true; setTimeout(cpuPlay, 650); }
+function cpuPlay() { const index = cpuHand.findIndex(canPlay); if (index < 0) { cpuHand.push(deck.pop()); cpuTurn = false; render(); return; } const card = cpuHand.splice(index, 1)[0]; discard.push(card); $("last-play").textContent = `The house played the ${card.rank} of ${card.suit}.`; render(); if (!cpuHand.length) return endRound(1); cpuTurn = false; $("message").textContent = card.rank === "7" ? "The house played a seven. Remember the warning." : "Your turn."; }
+function drawCard() { if (cpuTurn || !deck.length) return; hand.push(deck.pop()); render(); $("message").textContent = "You drew. Play if you can."; }
+function endRound(winner) { wins[winner] += 1; $("message").textContent = winner === 0 ? "You won the hand. Mao." : "The house won the hand."; setTimeout(deal, 1200); }
+$("draw").addEventListener("click", drawCard); deal();
+</script>
+</body>
+</html>
