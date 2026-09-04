@@ -1,3 +1,7 @@
+.table-area .felt { min-height: 200px; }
+.player-zone { padding-top: 16px; }
+.hand { min-height: 130px; }
+@media (max-width: 850px) { .table-area .felt { min-height: 285px; } .player-zone { padding-top: 24px; } .hand { min-height: 145px; } }
 .heading-actions { display: flex; gap: 8px; align-items: flex-start; }
 @media (min-width: 851px) { .felt { min-height: 260px; } }
 .action-buttons { display: flex; gap: 8px; align-items: center; }
