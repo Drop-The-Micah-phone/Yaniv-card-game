@@ -53,9 +53,10 @@ dialog { border: 0; border-radius: 6px; max-width: 470px; padding: 34px; color: 
 .bot-card-flight .card-back { display: grid; width: 91px; height: 126px; }
 @keyframes bot-card-to-discard { to { transform: translate(var(--flight-x), var(--flight-y)) rotate(6deg) scale(.72); opacity: .25; } }
 .draw-pile.shuffling-deck { opacity: .28; }
-.felt.shuffling-felt .piles { visibility: hidden; }
-.felt.shuffling-felt .table-message, .felt.shuffling-felt .felt-label { visibility: hidden; }
-.felt.shuffling-felt .shuffle-animation { visibility: visible; }
+.felt.shuffling-felt::after { content: ""; position: absolute; inset: 0; z-index: 2; background: #e4f0e8; border-radius: 7px; }
+.felt.shuffling-felt .piles { display: none; }
+.felt.shuffling-felt .table-message, .felt.shuffling-felt .felt-label { display: none; }
+.felt.shuffling-felt .shuffle-animation { display: block; z-index: 3; }
 .shuffle-animation { position: absolute; left: 50%; top: 50%; width: 330px; height: 190px; z-index: 3; pointer-events: none; transform: translate(-50%, -50%); animation: shuffle-complete 2.6s linear; }
 .shuffle-packet, .shuffle-riffle span, .shuffle-square, .shuffle-bridge { position: absolute; left: 50%; top: 32px; width: 76px; height: 104px; border: 5px solid #32806d; border-radius: 5px; background: var(--green); outline: 1px solid #8dbbad; outline-offset: -9px; box-shadow: 3px 4px 0 rgba(45,86,68,.16); }
 .shuffle-packet-left { animation: packet-left 2.6s cubic-bezier(.2,.8,.25,1) both; }
