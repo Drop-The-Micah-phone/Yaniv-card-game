@@ -41,14 +41,30 @@ dialog { border: 0; border-radius: 6px; max-width: 470px; padding: 34px; color: 
 
 .card-back, .card-face { box-sizing: border-box; flex: 0 0 91px; width: 91px; height: 126px; aspect-ratio: 91 / 126; }
 .card-back { display: grid; place-items: center; }
+.revealed-player-hand { width: 100%; }
+.revealed-player-hand { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+.revealed-seat { min-width: 0; }
+.revealed-seat > .eyebrow { justify-content: center; margin-bottom: 8px; }
+.revealed-player-hand .revealed-hand { gap: 8px; margin-top: 0; }
+.revealed-player-hand .revealed-hand .card-face { width: 82px; height: 115px; font-size: 30px; box-shadow: 3px 4px 0 rgba(45,86,68,.14); }
+.revealed-player-hand .revealed-hand .card-corner { display: block; }
+@media (max-width: 850px) { .revealed-player-hand { grid-template-columns: 1fr; gap: 16px; } .revealed-player-hand .revealed-hand { overflow-x: auto; justify-content: flex-start; padding: 0 4px 4px; } }
 .bot-card-flight { position: fixed; z-index: 20; width: 91px; height: 126px; pointer-events: none; animation: bot-card-to-discard .34s cubic-bezier(.2,.8,.3,1) forwards; }
 .bot-card-flight .card-back { display: grid; width: 91px; height: 126px; }
 @keyframes bot-card-to-discard { to { transform: translate(var(--flight-x), var(--flight-y)) rotate(6deg) scale(.72); opacity: .25; } }
-.shuffle-animation { position: absolute; inset: 0; z-index: 3; pointer-events: none; animation: shuffle-complete 1.55s linear; }
-.bridge-pack { position: absolute; left: 50%; top: 0; width: 44px; height: 126px; border: 7px solid #32806d; border-radius: 5px; background: var(--green); outline: 1px solid #8dbbad; outline-offset: -12px; box-shadow: 3px 4px 0 rgba(45,86,68,.14); transform: translateX(-100%); animation: bridge-left 1.55s cubic-bezier(.2,.85,.25,1) both; }
-.bridge-pack-right { transform: translateX(0); animation-name: bridge-right; }
-@keyframes bridge-left { 0%, 14% { transform: translateX(-100%) rotate(0); } 42% { transform: translate(-120px, 5px) rotate(-8deg); } 67% { transform: translate(-64px, -24px) rotate(-18deg); } 84% { transform: translate(-45px, 0) rotate(-4deg); } 100% { transform: translate(-100%, 0) rotate(0); } }
-@keyframes bridge-right { 0%, 14% { transform: translateX(0) rotate(0); } 42% { transform: translate(120px, 5px) rotate(8deg); } 67% { transform: translate(64px, -24px) rotate(18deg); } 84% { transform: translate(45px, 0) rotate(4deg); } 100% { transform: translate(0, 0) rotate(0); } }
+.shuffle-animation { position: absolute; inset: 0; z-index: 3; pointer-events: none; animation: shuffle-complete 2.6s linear; }
+.shuffle-packet, .shuffle-riffle span, .shuffle-square, .shuffle-bridge { position: absolute; left: 50%; top: 7px; width: 38px; height: 54px; border: 3px solid #32806d; border-radius: 3px; background: var(--green); outline: 1px solid #8dbbad; outline-offset: -6px; box-shadow: 2px 2px 0 rgba(45,86,68,.16); }
+.shuffle-packet-left { animation: packet-left 2.6s cubic-bezier(.2,.8,.25,1) both; }
+.shuffle-packet-right { animation: packet-right 2.6s cubic-bezier(.2,.8,.25,1) both; }
+@keyframes packet-left { 0%, 12% { transform: translateX(-50%) rotate(0); } 27% { transform: translate(-74px, 2px) rotate(-7deg); } 43%, 100% { transform: translate(-57px, 5px) rotate(-8deg); opacity: 0; } }
+@keyframes packet-right { 0%, 12% { transform: translateX(-50%) rotate(0); } 27% { transform: translate(36px, 8px) rotate(7deg); } 43%, 100% { transform: translate(57px, 5px) rotate(8deg); opacity: 0; } }
+.shuffle-riffle { position: absolute; inset: 0; }
+.shuffle-riffle span { opacity: 0; animation: riffle-card 2.6s cubic-bezier(.2,.8,.25,1) both; animation-delay: calc(var(--riffle-index) * 42ms); }
+@keyframes riffle-card { 0%, 28% { opacity: 0; transform: translate(-50%, 5px) rotate(0); } 39% { opacity: 1; transform: translate(calc(-50% + var(--riffle-offset)), 18px) rotate(calc(var(--riffle-index) * 2deg - 7deg)); } 54% { opacity: 1; transform: translate(calc(-50% + var(--riffle-offset) * .45), 12px) rotate(calc(var(--riffle-index) * 1deg - 3deg)); } 68%, 100% { opacity: 0; transform: translate(-50%, 7px) rotate(0); } }
+.shuffle-square { opacity: 0; animation: square-pile 2.6s cubic-bezier(.2,.8,.25,1) both; }
+@keyframes square-pile { 0%, 56% { opacity: 0; transform: translate(-50%, 7px) rotate(0); } 68% { opacity: 1; transform: translate(-50%, 7px) rotate(4deg); } 76% { opacity: 1; transform: translate(-50%, 7px) rotate(-3deg); } 84%, 100% { opacity: 0; transform: translate(-50%, 7px) rotate(0); } }
+.shuffle-bridge { opacity: 0; animation: bridge-pile 2.6s cubic-bezier(.2,.8,.25,1) both; }
+@keyframes bridge-pile { 0%, 72% { opacity: 0; transform: translate(-50%, 7px) scaleY(1); } 79% { opacity: 1; transform: translate(-50%, 2px) scaleY(.72) rotate(-3deg); } 87% { opacity: 1; transform: translate(-50%, 12px) scaleY(1.18) rotate(3deg); } 94%, 100% { opacity: 0; transform: translate(-50%, 7px) scaleY(1) rotate(0); } }
 @keyframes shuffle-complete { from, to { opacity: 1; } }
 .deal-card-flight { position: absolute; z-index: 4; width: 58px; height: 80px; border: 5px solid #32806d; border-radius: 4px; background: var(--green); outline: 1px solid #8dbbad; outline-offset: -9px; box-shadow: 2px 3px 0 rgba(45,86,68,.16); pointer-events: none; animation: deal-card 325ms cubic-bezier(.2,.8,.3,1) var(--deal-delay) both; }
 @keyframes deal-card { from { opacity: 0; transform: translate(0, 0) rotate(0) scale(.8); } 18% { opacity: 1; } to { opacity: 0; transform: translate(var(--deal-x), var(--deal-y)) rotate(8deg) scale(.65); } }
