@@ -1,3 +1,7 @@
+.pips { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(5, 1fr); width: 48px; height: 78px; align-items: center; justify-items: center; line-height: 1; }
+.pips span { font-size: 13px; }
+.face-symbol { font-size: 35px; }
+.play-top-button { display: inline-block; }
 .felt-label { top: 8px; }
 .piles { transform: translateY(8px); }
 .table-area .felt { min-height: 200px; }
