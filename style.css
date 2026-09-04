@@ -1,3 +1,5 @@
+.felt-label { top: 8px; }
+.piles { transform: translateY(8px); }
 .table-area .felt { min-height: 200px; }
 .player-zone { padding-top: 16px; }
 .hand { min-height: 130px; }
