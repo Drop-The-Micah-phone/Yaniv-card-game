@@ -1,1 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Yaniv | Card table</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<main class="app-shell">
+		<header class="topbar">
+			<div class="brand"><span class="brand-mark">Y</span><span>YANIV <small>TABLE 01</small></span></div>
+			<div class="table-status"><span class="live-dot"></span><span id="round-label">ROUND 01</span><span class="divider"></span><span id="turn-label">YOUR TURN</span></div>
+			<button class="text-button" id="new-game-button">New game</button>
+			<button class="text-button" id="rules-button">Rules <span aria-hidden="true">+</span></button>
+		</header>
+		<section class="game-layout">
+			<aside class="scoreboard panel"><div class="eyebrow">Scoreboard <span>first to 100 loses</span></div><div id="score-list"></div><div class="score-note"><span class="live-dot"></span> Local game against CPU</div></aside>
+			<section class="table-area">
+				<div class="opponents" id="opponents"></div>
+				<div class="felt"><div class="felt-label">DRAW & DISCARD</div><div class="piles"><button class="deck pile" id="draw-pile" aria-label="Draw from draw pile"><span class="card-back">Y</span><strong id="draw-count">0</strong><small>DRAW</small></button><div class="pile-gap">or</div><button class="discard pile" id="discard-pile" aria-label="Draw the top discard"><span id="discard-card"></span><strong>TOP CARD</strong></button></div><p class="table-message" id="table-message">Choose cards to play, or call Yaniv.</p></div>
+				<section class="player-zone"><div class="player-heading"><div><span class="eyebrow">Your hand</span><span class="hand-points" id="hand-points">0 PTS</span></div><button class="yaniv-button" id="yaniv-button">Call Yaniv <span>7 or less</span></button></div><div class="hand" id="player-hand"></div><div class="action-bar"><span class="selection-info" id="selection-info">Select a card or meld</span><button class="primary-button" id="play-button" disabled>Play selected</button></div></section>
+			</section>
+		</section>
+	</main>
+	<dialog id="setup-dialog"><span class="eyebrow">Table setup</span><h2>Choose your table.</h2><label for="player-count">Players<select id="player-count"><option value="2">2 players</option><option value="3">3 players</option><option value="4" selected>4 players</option></select></label><label for="human-count">People at this device<select id="human-count"><option value="1" selected>1 person</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">4 people</option></select></label><button class="primary-button" id="start-game-button">Start game</button></dialog>
+	<dialog id="rules-dialog"><button class="close-button" id="close-rules" aria-label="Close rules">x</button><span class="eyebrow">How to play</span><h2>Make your hand small.</h2><p>On your turn, play one card, a set of matching ranks, or a same-suit straight of three or more cards. Then draw exactly one card from either pile.</p><p>At the very start of your turn, call <strong>Yaniv</strong> with 7 points or fewer. The lowest hand scores zero; everyone else scores their hand. A successful caller scores zero. If anyone ties or beats the caller with a lower hand, the caller gets 30 instead.</p><p>The first player to reach 100 ends the game. Lowest total wins.</p></dialog>
+	<div class="toast" id="toast" role="status"></div>
+	<script src="game.js"></script>
+</body>
+</html>
 
