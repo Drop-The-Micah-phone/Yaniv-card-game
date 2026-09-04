@@ -36,5 +36,8 @@ dialog { border: 0; border-radius: 6px; max-width: 470px; padding: 34px; color: 
 .hand .card-button[draggable="true"] { cursor: grab; }
 .hand .card-button.dragging { opacity: .35; cursor: grabbing; }
 .hand .card-button.playing { animation: card-to-discard .32s cubic-bezier(.2,.8,.3,1) forwards; pointer-events: none; }
-@keyframes card-to-discard { to { opacity: 0; transform: translateY(-155px) scale(.72) rotate(5deg); } }
+@keyframes card-to-discard { to { opacity: 0; transform: translate(var(--card-x), var(--card-y)) scale(.72) rotate(5deg); } }
 @media (prefers-reduced-motion: reduce) { .hand .card-button.playing { animation-duration: .01ms; } }
+
+.card-back, .card-face { box-sizing: border-box; flex: 0 0 91px; }
+.piles { margin-top: 24px; transform: none; }
