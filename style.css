@@ -1,3 +1,5 @@
+.heading-actions { display: flex; gap: 8px; align-items: flex-start; }
+@media (min-width: 851px) { .felt { min-height: 260px; } }
 .action-buttons { display: flex; gap: 8px; align-items: center; }
 .deal-button { border: 1px solid var(--line); border-radius: 3px; background: var(--white); color: var(--green); padding: 11px 14px; font-weight: 600; }
 :root { --ink: #172322; --muted: #70817b; --line: #d9e2dc; --paper: #f4f6f1; --white: #fffef9; --green: #1e6756; --mint: #d7eee3; --coral: #ed765f; --yellow: #f1c85b; }
